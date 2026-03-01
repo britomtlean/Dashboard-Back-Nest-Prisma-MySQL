@@ -5,10 +5,13 @@ import { PrismaService } from './prisma/prisma.service';
 import { UsuariosService } from './usuarios/usuarios.service';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { TarefasService } from './tarefas/tarefas.service';
+import { TarefasController } from './tarefas/tarefas.controller';
+import { TarefasModule } from './tarefas/tarefas.module';
 
 @Module({
-  imports: [UsuariosModule, PrismaModule],
-  controllers: [AppController],
-  providers: [AppService, PrismaService, UsuariosService],
+  imports: [UsuariosModule, PrismaModule, TarefasModule],
+  controllers: [AppController, TarefasController],
+  providers: [AppService, PrismaService, UsuariosService, TarefasService],
 })
 export class AppModule {}

@@ -10,10 +10,11 @@ import {
 //DATABASE
 import { PrismaService } from '../prisma/prisma.service';
 
-//TYPE
+//TYPES
 import type { Login, Casdastro } from 'src/types/Login';
+import type { JwtPayload } from '../types/JwtPayload'
 
-//AUTENTICAÇÃO
+//AUTENTICAÇÃO E CRYPTOGRAFIA
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -37,7 +38,6 @@ export class AuthService {
     const { nome, cpf, email, senha } = user;
 
     //Verifica se o CPF é inválido
-
     const cpfClean = cpf.trim();
 
     if (!cpfClean) {
@@ -58,7 +58,7 @@ export class AuthService {
     /************************************************************/
 
     //Criptografia
-    const salt = await bcrypt.genSalt(5);
+    const salt = await bcrypt.genSalt(10);
     const hashSenha = await bcrypt.hash(senha, salt);
     /***********************************************************/
 
@@ -105,14 +105,14 @@ export class AuthService {
 
     /**************Se a autenticação for valida ************************ */
 
-    const payload = {
+    const payload: JwtPayload = {
       sub: usuarioDB.id,
       nome: usuarioDB.nome,
     };
 
     const token = this.jwtService.sign(payload);
 
-    console.log('Usuario logado:',payload, new Date())
+    console.log('Usuario logado:', payload, new Date())
     return token;
   }
 

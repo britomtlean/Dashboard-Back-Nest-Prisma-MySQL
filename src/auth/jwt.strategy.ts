@@ -7,20 +7,19 @@ Strategy - CLASSE QUE DEFINE AUTENTICAÇÃO JWT
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-//VJWT
+//JWT
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 //COOKIE
 import { Request } from 'express';
 
+//TYPE
+import type { JwtPayload } from '../types/JwtPayload'
+import type { UsuarioLogado } from 'src/types/UsuarioLogado';
+
 //PRISMA
 import { PrismaService } from 'src/prisma/prisma.service';
-
-type JwtPayload = {
-  sub: number;
-  nome: string;
-};
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -39,7 +38,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario: UsuarioLogado | null = await this.prisma.usuario.findUnique({
       where: { id: payload.sub },
       select: {
         id: true,

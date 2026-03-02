@@ -1,23 +1,26 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { TarefasService } from './tarefas.service';
 
 @Controller('task')
 export class TarefasController {
   constructor(private readonly service: TarefasService) {}
 
-  @Get('/')
-  async teste() {
-    return '<h1>Hello Task</h1>';
-  }
-
+  //ROTA PARA CRIAR TAREFA
   @Post('/create')
-  async createTask(@Body() task: any) {
-    return await this.service.createTask(task);
+  @UseGuards(AuthGuard('jwt'))
+  async createTask(
+    @Body() task: any,
+    @Req() req: any
+  ) {
+    return await this.service.createTask(req.user, task);
   }
 
-  @Post('/get')
-  async getTask(@Body() user: any) {
-    return await this.service.getTask(user)
+  //ROTA QUE ENVIA TAREFAS PARA O USUÁRIO EXTRAIDO DO TOKEN
+  @Get('/get')
+  @UseGuards(AuthGuard('jwt'))
+  async sendTask(@Req() req: any) {
+    return await this.service.getTask(req.user)
   }
 }
 

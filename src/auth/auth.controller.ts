@@ -28,7 +28,7 @@ export class AuthController {
   ) {
     const token = await this.service.login(user);
 
-    //COOKIE
+    //COOKIE ENVIADO
     response.cookie('token', token, {
       httpOnly: true, // 🔥 impede acesso via JS (mais seguro)
       secure: false, // true em produção (https)
@@ -40,10 +40,10 @@ export class AuthController {
   }
   ///////////////////////////////////////////////////////////////
 
-  //VALIDAR USUARIO
+  //VALIDA TOKEN E ENVIA USUÁRIO
   @Get('validate')
   @UseGuards(AuthGuard('jwt'))
-  Auth(@Req() req: any) {
+  validateProfile(@Req() req: any) {
     return req.user;
   }
   /////////////////////////////////////////////////////////////////

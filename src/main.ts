@@ -7,7 +7,7 @@ async function bootstrap() {
 
   //CORS
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://back-end-dashboard-production.up.railway.app/'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });

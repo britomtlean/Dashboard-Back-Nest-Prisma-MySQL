@@ -31,7 +31,7 @@ export class AuthController {
     //COOKIE ENVIADO
     response.cookie('token', token, {
       httpOnly: true, // 🔥 impede acesso via JS (mais seguro)
-      secure: false, // true em produção (https)
+      secure: true, // true em produção (https)
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60, // 1 hora
     });

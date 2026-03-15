@@ -15,15 +15,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 
 //TYPE
-import type { JwtPayload } from '../types/JwtPayload'
-import type { UsuarioLogado } from 'src/types/UsuarioLogado';
+import type { JwtPayload } from '../types/JwtPayload';
+import type { LoggedUser } from 'src/types/LoggedUser';
 
 //PRISMA
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-
   //VALIDA O TOKEN E EXTRAI O PAYLOAD
   constructor(private readonly prisma: PrismaService) {
     super({
@@ -43,7 +42,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload) {
     //VERIFICA SE O USUÁRIO EXISTE
-    const usuario: UsuarioLogado | null = await this.prisma.usuario.findUnique({
+    const usuario: LoggedUser | null = await this.prisma.usuario.findUnique({
       where: { id: payload.sub },
       select: {
         id: true,

@@ -11,8 +11,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 
 //TYPES
-import type { Login, Casdastro } from 'src/types/Login';
-import type { JwtPayload } from '../types/JwtPayload'
+import type { Login, Casdastro } from 'src/types/Auth';
+import type { JwtPayload } from '../types/JwtPayload';
 
 //AUTENTICAÇÃO E CRYPTOGRAFIA
 import { JwtService } from '@nestjs/jwt';
@@ -112,7 +112,7 @@ export class AuthService {
 
     const token = this.jwtService.sign(payload);
 
-    console.log('Usuario conectado:', payload, new Date())
+    console.log('Usuario conectado:', payload, new Date());
     return {
       token: token,
     };

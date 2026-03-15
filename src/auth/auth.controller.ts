@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Body, UseGuards, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 //TYPE
-import type { Login, Casdastro } from 'src/types/Login';
+import type { Login, Casdastro } from 'src/types/Auth';
 
 //MIDDLEWARE
 import { AuthGuard } from '@nestjs/passport';
@@ -26,9 +34,7 @@ export class AuthController {
     @Body() user: Login,
     @Res({ passthrough: true }) response: Response,
   ) {
-
-      return await this.service.login(user)
-
+    return await this.service.login(user);
 
     /*TOKEN VIA COOKIE
     const token = await this.service.login(user);

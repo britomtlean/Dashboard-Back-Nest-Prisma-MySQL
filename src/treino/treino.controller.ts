@@ -19,6 +19,19 @@ export class TreinoController {
     return this.service.addExercise(exercise);
   }
 
+  /************************* GET ******************************** */
+  @Get('/getTypes')
+  @UseGuards(AuthGuard('jwt'))
+  sendTypesTraining(){
+    return this.service.sendTypesTraining()
+  }
+
+  @Get('/getExercises')
+  @UseGuards(AuthGuard('jwt'))
+  sendTypesExercises(){
+    return this.service.sendTypesExercises()
+  }
+
   @Get('/getDay')
   @UseGuards(AuthGuard('jwt'))
   sendTrainingDay(@Req() req: any) {

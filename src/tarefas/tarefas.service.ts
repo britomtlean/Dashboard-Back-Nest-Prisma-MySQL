@@ -3,13 +3,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { NotFoundException } from '@nestjs/common';
 
 //TYPE
-import type { UsuarioLogado } from 'src/types/UsuarioLogado';
+import type { LoggedUser } from 'src/types/LoggedUser';
 import { JwtPayload } from 'src/types/JwtPayload';
 
 type Task = {
-  id?: number
-  desc: string
-  status: boolean | null
+  id?: number;
+  desc: string;
+  status: boolean | null;
 };
 
 @Injectable()
@@ -17,7 +17,7 @@ export class TarefasService {
   constructor(private readonly prisma: PrismaService) {}
 
   //CRIAR TASK
-  async createTask(login: UsuarioLogado, task: Task) {
+  async createTask(login: LoggedUser, task: Task) {
     console.log('Identificação:', login, 'Task: ' + task.desc);
 
     const newTask = await this.prisma.tarefa.create({
@@ -32,7 +32,7 @@ export class TarefasService {
   ////////////////////////////////////////////////////////////
 
   //ENVIA TASK PARA O USUÁRIO INSERIDO NO PAYLOAD
-  async getTask(login: UsuarioLogado) {
+  async getTask(login: LoggedUser) {
     console.log('Identificação:', login);
 
     const tasks: Array<Task> = await this.prisma.tarefa.findMany({

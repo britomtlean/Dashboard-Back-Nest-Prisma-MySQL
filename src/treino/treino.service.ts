@@ -6,17 +6,41 @@ import {
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { PrismaService } from 'src/prisma/prisma.service';
 import type { ExerciseBody, TrainingBody } from 'src/types/Training';
-import { UsuarioLogado } from 'src/types/UsuarioLogado';
+import { LoggedUser } from 'src/types/LoggedUser';
 
 @Injectable()
 export class TreinoService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /*************************** ENVIAR TIPO DE TREINOS ************************ */
+  async sendTypesTraining() {
+    const typesTraining = await this.prisma.tipoTreino.findMany({});
+
+    return typesTraining;
+  }
+
+  /********************************* ENVIAR EXERCICIOS ************************************** */
+
+
+  async sendTypesExercises() {
+    const typesTraining = await this.prisma.subTipoTreino.findMany({
+      include:{
+        TipoTreino: {
+          select: {
+            id: true,
+            nome: true
+          }
+        }
+      }
+    });
+
+    return typesTraining;
+  }
   /************************************* CREATE *********************************** */
 
   async createTraining(
     training: TrainingBody,
-    user: UsuarioLogado,
+    user: LoggedUser,
   ): Promise<Record<string, any>> {
     console.log('usuario logado:', user.id, 'treino recebido:', training);
 
@@ -53,7 +77,7 @@ export class TreinoService {
 
   /**************************************** ENVIAR TREINO DO DIA********************************** */
 
-  async sendTrainingDay(user: UsuarioLogado) {
+  async sendTrainingDay(user: LoggedUser) {
     const today = new Date(
       new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }),
     ).getDay();
@@ -85,10 +109,6 @@ export class TreinoService {
         },
       },
     });
-
-    if (!trainingDay.length) {
-      throw new NotFoundException('Não há treinos registrados para este dia');
-    }
 
     console.log('Treinado registrado:', trainingDay);
     return trainingDay;

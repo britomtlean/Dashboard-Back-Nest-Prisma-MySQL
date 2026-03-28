@@ -139,4 +139,22 @@ export class TreinoService {
     console.log('Exercicio adicionado:', newExercise, new Date());
     return newExercise;
   }
+
+
+  /*************************** Apagar Treino **************************/
+  async deleteTraining(body: Record<string, any>, user: LoggedUser){
+
+    console.log(`Usuario logado: `,+user.id, new Date(), `id recebido:`, body.id)
+
+    const trainingDropped = await this.prisma.treino.delete({
+      where: {
+        id_usuario: user.id,
+        id: body.id
+      }
+    })
+
+    console.log(`Treino deletado: ${trainingDropped}`, new Date());
+    return trainingDropped
+  }
+
 }

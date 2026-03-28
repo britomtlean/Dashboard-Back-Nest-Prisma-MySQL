@@ -67,7 +67,7 @@ model Exercicio {
   id_SubTipoTreino Int
   id_Treino        Int
   SubTipoTreino    SubTipoTreino @relation(fields: [id_SubTipoTreino], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_subTipoTreino_exercicio")
-  Treino           Treino        @relation(fields: [id_Treino], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_treino_exercicio")
+  Treino           Treino        @relation(fields: [id_Treino], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_treino_exercicio")
 
   @@index([id_SubTipoTreino], map: "idx_subTipoTreino")
   @@index([id_Treino], map: "idx_treino")

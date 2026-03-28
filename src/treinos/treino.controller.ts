@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseGuards, Body, Req } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Body, Req, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import type { ReqExercise, ReqTraining } from 'src/types/Training';
 import { TreinoService } from './treino.service';
@@ -36,5 +36,13 @@ export class TreinoController {
   @UseGuards(AuthGuard('jwt'))
   sendTrainingDay(@Req() req: any) {
     return this.service.sendAllTrainings(req.user);
+  }
+
+  /************************ Delete ************************* */
+
+  @Delete('/delete-training')
+  @UseGuards(AuthGuard('jwt'))
+  deleteTraining(@Body() body: Record<string, any>, @Req() req: any){
+    return this.service.deleteTraining(body, req.user)
   }
 }
